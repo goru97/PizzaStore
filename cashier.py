@@ -33,19 +33,16 @@ def get_message():
         global clientInfo
         clientInfo = {'id': ++cust_id, 'host': request.json['host'], 'port': request.json['port']}
         customerQueue.put(clientInfo)
+        msg = ''
+        if len(customerQueue) == 1:
+            msg = ''
+        else:
+            msg = "I'll be right with you"
         message = {
             # 'customer_id': messages[-1]['customer_id'] + 1,
-            'msg': 'Wait',
+            'msg': msg,
             'Response-Code': 1
         }
-    # messages.append(message)
-    # print "Following message has been created: %s " % message
-    elif int(request_code) == 2:
-        message = {
-            'msg': 'So your total is $9',
-            'Response-Code': 2
-        }
-
     return jsonify({'message': message}), 201
 
 

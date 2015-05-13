@@ -5,6 +5,7 @@ import socket
 import sys
 import logging
 import time
+import thread
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 
@@ -20,7 +21,8 @@ appPort = customer_config['port']
 # appPort = sys.argv[1]
 
 
-def say_hi():
+def say_hi(delay):
+    time.sleep(delay)
     customer_msg = json.dumps({'msg': 'Hi!', 'host': socket.gethostbyname(socket.gethostname()), 'port': appPort})
     headers = {'Content-type': 'application/json', 'Accept': 'text/plain', 'Request-Code': 1}
     response = requests.post(cashier_url, customer_msg, headers=headers)
@@ -66,8 +68,13 @@ def order_total():
     time.sleep(2)
     return jsonify({'message': message}), 201
 
+try:
+    thread.start_new_thread(say_hi(), 2)
 
-say_hi()
+except:
+    print "Error: unable to start thread"
+
+
 if __name__ == '__main__':
     app.run('0.0.0.0', port=int(appPort), debug=True, use_reloader=False)
 
