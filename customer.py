@@ -3,6 +3,9 @@ import json
 from flask import Flask, jsonify, abort, make_response, request
 import socket
 import sys
+import logging
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
 
 '''socket.gethostbyname(socket.gethostname())'''
 '''
@@ -42,12 +45,11 @@ def ask_order():
         # message = {}
     request_code = request.headers['Request-Code']
     print(cashier_string+request.json['msg'])
-    if int(request_code) == 2:
-        message = {
-            # 'customer_id': messages[-1]['customer_id'] + 1,
-            'msg': 'Can I get one Pizza',
-            'Response-Code': 2
-        }
+    # if int(request_code) == 2:
+    message = {
+        'msg': 'Can I get one Pizza',
+        'Response-Code': 2
+    }
 
     return jsonify({'message': message}), 201
 

@@ -1,10 +1,14 @@
 #!flask/bin/python
 from flask import Flask, jsonify, abort, make_response, request
-import requests, json
+import requests
+import json
 import sys
 import thread
 import Queue
 import time
+import logging
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
 
 customerQueue = Queue.Queue()
 currently_serving = 0
@@ -12,7 +16,7 @@ appPort = sys.argv[1]
 app = Flask(__name__)
 customer_string = 'Customer: '
 clientInfo = {}
-
+cust_id = 0
 
 messages = [
     {
@@ -35,7 +39,7 @@ def get_message():
     print(customer_string+request.json['msg'])
     if int(request_code) == 1:
         global clientInfo
-        clientInfo = {'host': request.json['host'], 'port': request.json['port']}
+        clientInfo = {'id': ++cust_id, 'host': request.json['host'], 'port': request.json['port']}
         customerQueue.put(clientInfo)
         message = {
             # 'customer_id': messages[-1]['customer_id'] + 1,
@@ -62,7 +66,10 @@ def polar():
                 client_info = customerQueue.get()
                 host = client_info['host']
                 port = client_info['port']
-                ask_order(host, port, client_info)
+                try:
+                    ask_order(host, port, client_info)
+                except:
+                    print 'Have a good day!'
 
 
 def ask_order(host, port, client_info):
@@ -96,13 +103,10 @@ def set_order(host, port, client_info):
                               'client_port': client_info['port']})
     headers = {'Content-type': 'application/json', 'Accept': 'text/plain', 'Request-Code': 4}
     cook_url = 'http://'+host+':'+port+'/api/v1.0/set_order'
-    print(cook_url)
     response = requests.post(cook_url, cashier_msg, headers=headers)
     r = response.json()
-    if int(r['message']['Response-Code']) == 3:
-        print (customer_string+r['message']['msg'])
-        global currently_serving
-        currently_serving = 0
+    if int(r['message']['Response-Code']) == 4:
+        print ('Cook: '+r['message']['msg'])
 
 
 @app.errorhandler(400)

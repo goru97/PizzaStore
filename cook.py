@@ -2,6 +2,9 @@ from flask import Flask, jsonify, abort, make_response, request
 import thread
 import Queue
 import sys
+import logging
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
 
 app = Flask(__name__)
 cashier_string = 'Cashier: '
