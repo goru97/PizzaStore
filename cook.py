@@ -3,6 +3,7 @@ import thread
 import Queue
 import sys
 import logging
+import time
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 
@@ -25,7 +26,7 @@ def set_order():
             'msg': 'Preparing...',
             'Response-Code': 4
         }
-
+    time.sleep(2)
     return jsonify({'message': message}), 201
 
 if __name__ == '__main__':

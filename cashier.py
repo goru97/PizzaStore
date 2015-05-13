@@ -81,7 +81,7 @@ def ask_order(host, port, client_info):
     if int(r['message']['Response-Code']) == 2:
         print (customer_string+r['message']['msg'])
         client_info['msg'] = r['message']['msg']
-        time.sleep(5)
+        time.sleep(2)
         order_total(host, port, client_info)
 
 

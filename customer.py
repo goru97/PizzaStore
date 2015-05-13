@@ -4,6 +4,7 @@ from flask import Flask, jsonify, abort, make_response, request
 import socket
 import sys
 import logging
+import time
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 
@@ -50,7 +51,7 @@ def ask_order():
         'msg': 'Can I get one Pizza',
         'Response-Code': 2
     }
-
+    time.sleep(2)
     return jsonify({'message': message}), 201
 
 
@@ -67,7 +68,7 @@ def order_total():
             'msg': 'Here you go!',
             'Response-Code': 3
         }
-
+    time.sleep(2)
     return jsonify({'message': message}), 201
 
 
