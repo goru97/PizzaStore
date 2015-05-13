@@ -19,6 +19,7 @@ with open(config_file) as data_file:
             customer_config = json.load(data_file)
 food_choice = customer_config['food_choice']
 appPort = customer_config['port']
+cust_name = customer_config['name']
 # appPort = sys.argv[1]
 
 
@@ -43,7 +44,8 @@ def ask_order():
     if int(request_code) == 2:
         msg = ''
         for food in food_choice:
-            msg = msg+" "+food['name']
+            msg = msg+", "+food['name']
+            msg = msg[2:]
         message = {
             'msg': 'Can I get '+msg,
             'Response-Code': 2,
@@ -52,6 +54,23 @@ def ask_order():
     time.sleep(2)
     return jsonify({'message': message}), 201
 
+@app.route('/api/v1.0/ask_name', methods=['POST'])
+def ask_name():
+    if not request.json:
+        abort(400)
+        # message = {}
+    request_code = request.headers['Request-Code']
+    print(cashier_string+request.json['msg'])
+    if int(request_code) == 3:
+        msg = ''
+        for food in food_choice:
+            msg = msg+" "+food['name']
+        message = {
+            'Response-Code': 3,
+            'cust_name': cust_name
+        }
+    time.sleep(2)
+    return jsonify({'message': message}), 201
 
 @app.route('/api/v1.0/order_total', methods=['POST'])
 def order_total():
@@ -60,11 +79,11 @@ def order_total():
         # message = {}
     request_code = request.headers['Request-Code']
     print(cashier_string+request.json['msg'])
-    if int(request_code) == 3:
+    if int(request_code) == 4:
         message = {
             # 'customer_id': messages[-1]['customer_id'] + 1,
             "msg": "The wicked borrows but does not pay back, but the righteous is generous and gives- Psalm 37:21",
-            "Response-Code": 3
+            "Response-Code": 4
         }
     time.sleep(2)
     return jsonify({"message": message}), 201
@@ -76,10 +95,10 @@ def order_ready():
         # message = {}
     request_code = request.headers['Request-Code']
     print(cook_string+request.json['msg'])
-    if int(request_code) == 5:
+    if int(request_code) == 6:
         message = {
             "msg": "Thank You!",
-            "Response-Code": 5
+            "Response-Code": 6
         }
     time.sleep(2)
     return jsonify({"message": message}), 201
