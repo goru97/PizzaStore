@@ -7,6 +7,7 @@ import thread
 import Queue
 import time
 import logging
+import thread
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 
@@ -33,11 +34,11 @@ def get_message():
         global clientInfo
         clientInfo = {'id': ++cust_id, 'host': request.json['host'], 'port': request.json['port']}
         customerQueue.put(clientInfo)
-        msg = ''
-        if len(customerQueue) == 1:
-            msg = ''
+        msg = " "
+        if customerQueue.qsize() == 1:
+            msg = "Hi!"
         else:
-            msg = "I'll be right with you"
+            msg = "Hi! I'll be right with you."
         message = {
             # 'customer_id': messages[-1]['customer_id'] + 1,
             'msg': msg,
@@ -63,7 +64,7 @@ def polar():
 
 
 def ask_order(host, port, client_info):
-    cashier_msg = json.dumps({'msg': 'Hi! How can I help you today?'})
+    cashier_msg = json.dumps({'msg': 'How can I help you today?'})
     headers = {'Content-type': 'application/json', 'Accept': 'text/plain', 'Request-Code': 2}
     customer_url = 'http://'+host+':'+port+'/api/v1.0/ask_order'
     response = requests.post(customer_url, cashier_msg, headers=headers)

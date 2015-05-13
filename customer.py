@@ -12,6 +12,7 @@ log.setLevel(logging.ERROR)
 
 cashier_url = 'http://localhost:5001/api/v1.0/greeting'
 cashier_string = 'Cashier: '
+cook_string = 'Cook: '
 app = Flask(__name__)
 config_file = sys.argv[1]
 with open(config_file) as data_file:
@@ -62,14 +63,28 @@ def order_total():
     if int(request_code) == 3:
         message = {
             # 'customer_id': messages[-1]['customer_id'] + 1,
-            'msg': 'Here you go!',
-            'Response-Code': 3
+            "msg": "The wicked borrows but does not pay back, but the righteous is generous and gives- Psalm 37:21",
+            "Response-Code": 3
         }
     time.sleep(2)
-    return jsonify({'message': message}), 201
+    return jsonify({"message": message}), 201
 
+@app.route('/api/v1.0/order_ready', methods=['POST'])
+def order_ready():
+    if not request.json:
+        abort(400)
+        # message = {}
+    request_code = request.headers['Request-Code']
+    print(cook_string+request.json['msg'])
+    if int(request_code) == 5:
+        message = {
+            "msg": "Thank You!",
+            "Response-Code": 5
+        }
+    time.sleep(2)
+    return jsonify({"message": message}), 201
 try:
-    thread.start_new_thread(say_hi(), 2)
+    thread.start_new_thread(say_hi, (2,))
 
 except:
     print "Error: unable to start thread"
