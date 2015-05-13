@@ -1,0 +1,144 @@
+[{
+	"id":100,
+	"name":"Double Bacon 6-cheese",
+	"size":"S",
+	"price":"$8"
+	},
+	{
+	"id":108,
+	"name":"Double Bacon 6-cheese",
+	"size":"M",
+	"price":"$12"
+	},
+	{
+	"id":109,
+	"name":"Double Bacon 6-cheese",
+	"size":"L",
+	"price":"$16"
+	},
+	{
+	"id":101,
+	"name":"Buffalo Chicken",
+	"size":"S",
+	"price":"$8.50"
+	},
+	{
+	"id":110,
+	"name":"Buffalo Chicken",
+	"size":"M",
+	"price":"$12.50"
+	},
+	{
+	"id":111,
+	"name":"Buffalo Chicken",
+	"size":"L",
+	"price":"$16.50"
+	},
+	{
+	"id":102,
+	"name":"The Works",
+	"size":"S",
+	"price":"$10.35"
+	},
+	{
+	"id":112,
+	"name":"The Works",
+	"size":"M",
+	"price":"$14.35"
+	},
+	{
+	"id":113,
+	"name":"The Works",
+	"size":"L",
+	"price":"$18.35"
+	},
+	{
+	"id":103,
+	"name":"The Meats",
+	"size":"S",
+	"price":"$11.20"
+	},
+	{
+	"id":114,
+	"name":"The Meats",
+	"size":"M",
+	"price":"$15.20"
+	},
+	{
+	"id":115,
+	"name":"The Meats",
+	"size":"L",
+	"price":"$19.20"
+	},
+	{
+	"id":104,
+	"name":"John's Favorite",
+	"size":"S",
+	"price":"$8"
+	},
+	{
+	"id":116,
+	"name":"John's Favorite",
+	"size":"M",
+	"price":"$12"
+	},
+	{
+	"id":117,
+	"name":"John's Favorite",
+	"size":"L",
+	"price":"$16"
+	},
+	{
+	"id":105,
+	"name":"Garden Fresh",
+	"size":"S",
+	"price":"$9"
+	},
+	{
+	"id":118,
+	"name":"Garden Fresh",
+	"size":"M",
+	"price":"$13"
+	},
+	{
+	"id":119,
+	"name":"Garden Fresh",
+	"size":"L",
+	"price":"$17"
+	},
+	{
+	"id":106,
+	"name":"Spicy Italian",
+	"size":"S",
+	"price":"$9"
+	},
+	{
+	"id":120,
+	"name":"Spicy Italian",
+	"size":"M",
+	"price":"$13"
+	},
+	{
+	"id":121,
+	"name":"Spicy Italian",
+	"size":"L",
+	"price":"$17"
+	},
+	{
+	"id":107,
+	"price":"BBQ Chicken Bacon",
+	"size":"S",
+	"price":"$10"
+	},
+	{
+	"id":122,
+	"price":"BBQ Chicken Bacon",
+	"size":"M",
+	"price":"$14"
+	},
+	{
+	"id":123,
+	"price":"BBQ Chicken Bacon",
+	"size":"L",
+	"price":"$18"
+	}]

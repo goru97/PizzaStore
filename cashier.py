@@ -18,16 +18,8 @@ customer_string = 'Customer: '
 clientInfo = {}
 cust_id = 0
 
-messages = [
-    {
-        'customer_id':1,
-        'msg': u'Hi customer 1',
-    },
-    {
-        'customer_id':2,
-        'msg': u'Hi customer 2',
-    }
-]
+with open('menu.json') as data_file:
+    menu = json.load(data_file)
 
 
 @app.route('/api/v1.0/greeting', methods=['POST'])
@@ -66,10 +58,11 @@ def polar():
                 client_info = customerQueue.get()
                 host = client_info['host']
                 port = client_info['port']
-                try:
+                ask_order(host, port, client_info)
+                '''try:
                     ask_order(host, port, client_info)
                 except:
-                    print 'Have a good day!'
+                    print 'Have a good day!'''
 
 
 def ask_order(host, port, client_info):
@@ -81,12 +74,20 @@ def ask_order(host, port, client_info):
     if int(r['message']['Response-Code']) == 2:
         print (customer_string+r['message']['msg'])
         client_info['msg'] = r['message']['msg']
+        client_info['food_choice'] = r['message']['food_choice']
         time.sleep(2)
         order_total(host, port, client_info)
 
 
 def order_total(host, port, client_info):
-    cashier_msg = json.dumps({'msg': 'So your total is $15'})
+    food_choice = client_info['food_choice']
+    total = 0
+    for food in food_choice:
+        for choice in menu:
+            if food['id'] == choice['id']:
+                total += float(choice['price'][1:])
+
+    cashier_msg = json.dumps({'msg': 'So your total is $'+str(total)})
     headers = {'Content-type': 'application/json', 'Accept': 'text/plain', 'Request-Code': 3}
     customer_url = 'http://'+host+':'+port+'/api/v1.0/order_total'
     response = requests.post(customer_url, cashier_msg, headers=headers)
@@ -99,8 +100,8 @@ def order_total(host, port, client_info):
 
 
 def set_order(host, port, client_info):
-    cashier_msg = json.dumps({'msg': client_info['msg'], 'client_host': client_info['host'],
-                              'client_port': client_info['port']})
+    client_info.pop("msg", None)
+    cashier_msg = json.dumps(client_info)
     headers = {'Content-type': 'application/json', 'Accept': 'text/plain', 'Request-Code': 4}
     cook_url = 'http://'+host+':'+port+'/api/v1.0/set_order'
     response = requests.post(cook_url, cashier_msg, headers=headers)

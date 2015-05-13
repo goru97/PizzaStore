@@ -8,25 +8,16 @@ import time
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 
-'''socket.gethostbyname(socket.gethostname())'''
-'''
-order_url = 'http://127.0.0.1:5000/todo/api/v1.0/orders'
-order_detail = json.dumps({"item": "tudy"})
-headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
-response = requests.post(order_url, order_detail, headers=headers)
-data = response.text
-print(data)
-'''
-'''
-response = requests.get('http://127.0.0.1:5000/todo/api/v1.0/orders')
-data = response.json()
-print(data)
-'''
 
 cashier_url = 'http://localhost:5001/api/v1.0/greeting'
 cashier_string = 'Cashier: '
 app = Flask(__name__)
-appPort = sys.argv[1]
+config_file = sys.argv[1]
+with open(config_file) as data_file:
+            customer_config = json.load(data_file)
+food_choice = customer_config['food_choice']
+appPort = customer_config['port']
+# appPort = sys.argv[1]
 
 
 def say_hi():
@@ -46,11 +37,15 @@ def ask_order():
         # message = {}
     request_code = request.headers['Request-Code']
     print(cashier_string+request.json['msg'])
-    # if int(request_code) == 2:
-    message = {
-        'msg': 'Can I get one Pizza',
-        'Response-Code': 2
-    }
+    if int(request_code) == 2:
+        msg = ''
+        for food in food_choice:
+            msg = msg+" "+food['name']
+        message = {
+            'msg': 'Can I get '+msg,
+            'Response-Code': 2,
+            'food_choice': food_choice
+        }
     time.sleep(2)
     return jsonify({'message': message}), 201
 
@@ -76,12 +71,5 @@ say_hi()
 if __name__ == '__main__':
     app.run('0.0.0.0', port=int(appPort), debug=True, use_reloader=False)
 
-
-'''
-if r is "Hi! How can I help you today?":
-    order_url = 'http://10.189.184.232:5000/api/v1.0/order'
-    customer_order = json.dumps({"message": "Can I get these items?", "items": ["Coffee", "Chai"]})
-    headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
-'''
 
 
